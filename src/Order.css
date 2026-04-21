@@ -1,0 +1,426 @@
+.order-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f7f3ef, #efe6dc);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+.order-page h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #3e2723;
+  letter-spacing: 1px;
+}
+
+/* CARD */
+.order-page > p,
+.order-form {
+  width: 100%;
+  max-width: 420px;
+}
+
+.order-page p {
+  margin: 6px 0;
+  font-size: 18px;
+  color: #4e342e;
+}
+
+.order-page p b {
+  font-size: 22px;
+  color: #3e2723;
+}
+
+/* FORM */
+.order-page input {
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 16px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #d7ccc8;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.order-page input:focus {
+  border-color: #8d6e63;
+  box-shadow: 0 0 0 2px rgba(141, 110, 99, 0.2);
+}
+
+/* BUTTON */
+.order-page button {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 420px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background-color: #6d4c41;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.25s ease;
+}
+
+.order-page button:hover {
+  background-color: #5d4037;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.order-page button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .order-page h2 {
+    font-size: 26px;
+  }
+
+  .order-page p b {
+    font-size: 20px;
+  }
+}
+
+/* Ringkasan Pesanan */
+.order-summary {
+  width: 100%;
+  max-width: 420px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin: 20px 0;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 17px;
+  color: #4e342e;
+  border-bottom: 1px solid #eee;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item span {
+  font-weight: 500;
+}
+
+/* Total Harga */
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #3e2723;
+}
+
+/* Payment Method Container */
+.payment-method {
+  background: linear-gradient(135deg, #faf5f1 0%, #f5ede5 100%);
+  border: 2px solid #d4a574;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 500px;
+  box-shadow: 0 4px 15px rgba(139, 90, 43, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Title */
+.payment-method p {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #5a3a2a;
+  letter-spacing: 0.5px;
+}
+
+/* Radio Label Styling */
+.payment-method label {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: #ffffff;
+  border: 2px solid #e8d4c4;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 15px;
+  color: #3d2817;
+  font-weight: 500;
+}
+
+.payment-method label:hover {
+  border-color: #c9a877;
+  background: #fffbf7;
+  box-shadow: 0 2px 8px rgba(139, 90, 43, 0.08);
+}
+
+.payment-method label:last-child {
+  margin-bottom: 0;
+}
+
+/* Radio Input Styling */
+.payment-method input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #c9a877;
+  border-radius: 50%;
+  margin-right: 12px;
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.payment-method input[type="radio"]:hover {
+  border-color: #a67c4d;
+  box-shadow: 0 0 0 3px rgba(201, 168, 119, 0.1);
+}
+
+.payment-method input[type="radio"]:checked {
+  border-color: #8b5a2b;
+  background: linear-gradient(135deg, #c9a877 0%, #a67c4d 100%);
+  box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.15);
+}
+
+/* Checked State Indicator */
+.payment-method input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Focused State */
+.payment-method input[type="radio"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201, 168, 119, 0.2);
+}
+
+/* Label Text Styling */
+.payment-method label:has(input:checked) {
+  background: linear-gradient(135deg, #fffbf7 0%, #fef5f0 100%);
+  border-color: #8b5a2b;
+  color: #5a3a2a;
+  font-weight: 600;
+}
+
+/* Container Utama Form */
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Judul Section (Tipe Pesanan & Metode Pembayaran) */
+.order-type p, .payment-method p {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Container Radio Button */
+.order-type, .payment-method {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Styling Label sebagai Card/Tombol */
+.order-type label, .payment-method label {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+/* Sembunyikan Input Radio Asli */
+.order-type input[type="radio"],
+.payment-method input[type="radio"] {
+  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+  accent-color: #ff4757; /* Warna bulat radio saat terpilih */
+}
+
+/* Efek Hover */
+.order-type label:hover, .payment-method label:hover {
+  background-color: #f9f9f9;
+  border-color: #ccc;
+}
+
+/* Styling saat Radio Terpilih (Checked) */
+.order-type label:has(input:checked),
+.payment-method label:has(input:checked) {
+  border-color: #ff4757;
+  background-color: #fff1f2;
+  color: #ff4757;
+}
+
+/* Input Text & Number */
+.order-form input[type="text"],
+.order-form input[type="number"] {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Button Styling */
+.order-form button {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.order-form button:first-of-type {
+  background-color: #ff4757;
+  color: white;
+}
+
+.order-form button:last-of-type {
+  background-color: #f1f2f6;
+  color: #2f3542;
+}
+
+.order-form button:hover {
+  opacity: 0.8;
+}
+
+/* Efek saat tombol loading */
+button.btn-confirm.loading {
+  background-color: #ff8a94 !important; /* Warna lebih pudar */
+  cursor: not-allowed;
+  position: relative;
+}
+
+/* Optional: Tambahkan spinner sederhana di samping teks */
+button.btn-confirm.loading::after {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 10px;
+  border: 2px solid white;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Menonaktifkan input saat loading */
+input:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Container Utama */
+.order-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Background Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Hitam transparan */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; /* Angka tinggi agar menutupi semuanya */
+  backdrop-filter: blur(3px); /* Efek blur halus di belakang overlay */
+}
+
+/* Kotak Pesan */
+.loading-box {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 80%;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* Animasi Spinner */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #ff4757; /* Ubah warna sesuai tema brand kamu */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-box p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2f3542;
+  margin: 0;
+}
+
+/* Styling tambahan untuk tombol jika loading */
+.btn-confirm.loading {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-add-more {
+  margin-top: 10px;
+  background: none;
+  border: 1px solid #ff4757;
+  color: #ff4757;
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+}
