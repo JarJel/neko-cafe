@@ -1,0 +1,17 @@
+{
+  "name": "cafe-backend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node ../server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "midtrans-client": "^1.4.3",
+    "multer": "^2.0.2",
+    "mysql2": "^3.16.2"
+  }
+}
