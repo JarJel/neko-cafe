@@ -18,10 +18,27 @@ function MainPage() {
   const [loadingId, setLoadingId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation(); // ✅ ambil location state
+  const [toast, setToast] = useState({ show: false, message: "", type: "info" });
+
+  const showCustomToast = (message, type = "info") => {
+    setToast({ show: true, message, type });
+  };
+
+  useEffect(() => {
+    if (!toast.show) return;
+    const timer = setTimeout(() => {
+      setToast((prev) => ({ ...prev, show: false }));
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [toast.show]);
 
   // ✅ Restore cart jika kembali dari OrderPage via "Tambah Menu Lagi"
   useEffect(() => {
-    if (location.state?.reopenCart && location.state?.cartItems?.length > 0) {
+    if (
+      location.state?.reopenCart &&
+      Array.isArray(location.state.cartItems) &&
+      location.state.cartItems.length > 0
+    ) {
       setCartItems(location.state.cartItems);
       setShowPopup(true);
       // Bersihkan state agar tidak loop saat refresh
@@ -47,16 +64,18 @@ function MainPage() {
   // Fetch products
   useEffect(() => {
     const fetchProducts = () => {
-      api.get("/products").then((res) => setProducts(res.data));
+      api.get("/products").then((res) =>
+        setProducts(Array.isArray(res.data) ? res.data : []),
+      );
     };
     fetchProducts();
     const interval = setInterval(fetchProducts, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const filteredProducts = products.filter(
-    (item) => item.category_name.toLowerCase() === selectedCategory
-  );
+  const filteredProducts = Array.isArray(products)
+    ? products.filter((item) => item.category_name.toLowerCase() === selectedCategory)
+    : [];
 
   // Scroll hide navbar
   useEffect(() => {
@@ -73,11 +92,18 @@ function MainPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const MAX_QUANTITY = 50;
+
   // Add to Cart
   const addToCart = (product) => {
     setCartItems((prev) => {
       const existing = prev.find((i) => i.product_id === product.product_id);
       if (existing) {
+        if (existing.quantity >= MAX_QUANTITY) {
+          showCustomToast(`Maksimum quantity adalah ${MAX_QUANTITY}`, "error");
+          return prev;
+        }
+
         return prev.map((i) =>
           i.product_id === product.product_id
             ? { ...i, quantity: i.quantity + 1 }
@@ -98,7 +124,11 @@ function MainPage() {
     setCartItems((prev) =>
       prev.map((item) =>
         item.product_id === product_id
-          ? { ...item, quantity: item.quantity + 1 }
+          ? {
+              ...item,
+              quantity:
+                item.quantity < MAX_QUANTITY ? item.quantity + 1 : item.quantity,
+            }
           : item
       )
     );
@@ -296,6 +326,13 @@ function MainPage() {
           </div>
         </div>
       </div>
+
+      {toast.show && (
+        <div className={`custom-toast ${toast.type}`}>
+          <span className="toast-icon">⚠️</span>
+          <span className="toast-message">{toast.message}</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -13,6 +13,30 @@ function OrderPage() {
   const [orderType, setOrderType] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+  const [toast, setToast] = useState({ show: false, message: "", type: "info" });
+
+  const showCustomToast = (message, type = "info") => {
+    setToast({ show: true, message, type });
+  };
+
+  useEffect(() => {
+    if (!toast.show) return;
+    const timer = setTimeout(() => {
+      setToast((prev) => ({ ...prev, show: false }));
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [toast.show]);
+
+  useEffect(() => {
+    if (!state) return;
+
+    if (Array.isArray(state.cartItems)) {
+      setCartItems(state.cartItems);
+    } else if (state.product_id) {
+      setCartItems([{ ...state, quantity: 1 }]);
+    }
+  }, [state]);
 
   // --- TAMBAHKAN USEEFFECT DI SINI ---
   useEffect(() => {
@@ -37,12 +61,26 @@ function OrderPage() {
 
   if (!state) return <p>Product not found</p>;
 
-  let cartItems = [];
-  if (Array.isArray(state.cartItems)) {
-    cartItems = state.cartItems;
-  } else if (state.product_id) {
-    cartItems = [{ ...state, quantity: 1 }];
-  }
+  const MAX_QUANTITY = 50;
+
+  const incrementQuantity = (productId) => {
+    setCartItems((prev) =>
+      prev.map((item) => {
+        if (item.product_id !== productId) return item;
+        return { ...item, quantity: item.quantity + 1 };
+      }),
+    );
+  };
+
+  const decrementQuantity = (productId) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.product_id === productId
+          ? { ...item, quantity: Math.max(item.quantity - 1, 1) }
+          : item,
+      ),
+    );
+  };
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -51,19 +89,26 @@ function OrderPage() {
 
   const handleSubmit = async () => {
     const tableNum = parseInt(table)
+    
+    const hasOverLimitItem = cartItems.some((item) => item.quantity > MAX_QUANTITY);
+    if (hasOverLimitItem) {
+      showCustomToast(`Maksimum quantity adalah ${MAX_QUANTITY}`, "error");
+      return;
+    }
+
     if (!name || !paymentMethod || !orderType || cartItems.length === 0) {
-      alert("Lengkapi data order");
+      showCustomToast("Lengkapi data order", "error");
       return;
     }
 
     if (orderType === "dine_in") {
       if (!table) {
-        alert("Nomor Meja Wajib Diisi Untuk Dine in");
+        showCustomToast("Nomor Meja Wajib Diisi Untuk Dine in", "error");
         return;
       }
 
       if (isNaN(tableNum) || tableNum < 1 || tableNum > 25) {
-        alert("Nomor meja tidak terdaftar");
+        showCustomToast("Nomor meja tidak terdaftar", "error");
         return;
       }
     }
@@ -149,10 +194,30 @@ function OrderPage() {
       <div className="order-summary">
         {cartItems.map((item, idx) => (
           <div key={idx} className="summary-item">
-            <span>
-              {item.name || item.product_name} x {item.quantity}
-            </span>
-            <span>Rp {(item.price * item.quantity).toLocaleString()}</span>
+            <div className="item-details">
+              <span className="item-name">{item.name || item.product_name}</span>
+              <span className="item-price">Rp {Number(item.price).toLocaleString()}</span>
+            </div>
+            <div className="item-actions">
+              <div className="quantity-controls">
+                <button
+                  type="button"
+                  onClick={() => decrementQuantity(item.product_id)}
+                  disabled={isLoading || item.quantity <= 1}
+                >
+                  -
+                </button>
+                <span className="qty-val">{item.quantity}</span>
+                <button
+                  type="button"
+                  onClick={() => incrementQuantity(item.product_id)}
+                  disabled={isLoading}
+                >
+                  +
+                </button>
+              </div>
+              <span className="item-total">Rp {(item.price * item.quantity).toLocaleString()}</span>
+            </div>
           </div>
         ))}
         <hr />
@@ -250,6 +315,13 @@ function OrderPage() {
           Tambah Menu Lagi
         </button>
       </div>
+
+      {toast.show && (
+        <div className={`custom-toast ${toast.type}`}>
+          <span className="toast-icon">⚠️</span>
+          <span className="toast-message">{toast.message}</span>
+        </div>
+      )}
     </div>
   );
 }

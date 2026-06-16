@@ -12,8 +12,12 @@ export default function AdminProductList() {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
-    api.get("/categories").then((res) => setCategories(res.data));
-    api.get("/products").then((res) => setProducts(res.data));
+    api.get("/categories").then((res) =>
+      setCategories(Array.isArray(res.data) ? res.data : []),
+    );
+    api.get("/products").then((res) =>
+      setProducts(Array.isArray(res.data) ? res.data : []),
+    );
   }, []);
 
   const handleStatusChange = async (productId, newStatus) => {
@@ -28,10 +32,27 @@ export default function AdminProductList() {
     }
   };
 
+  const handleDeleteProduct = async (productId) => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+      try {
+        await api.delete(`/products/${productId}`);
+        setProducts((prev) =>
+          prev.filter((p) => p.product_id !== productId)
+        );
+        alert("Produk berhasil dihapus");
+      } catch (err) {
+        console.error(err);
+        alert("Gagal menghapus produk");
+      }
+    }
+  };
+
   const filteredProducts =
     selectedCategory === "all"
       ? products
-      : products.filter((p) => p.category_id == selectedCategory);
+      : Array.isArray(products)
+      ? products.filter((p) => p.category_id == selectedCategory)
+      : [];
 
   return (
     <div className="admin-products">
@@ -70,6 +91,9 @@ export default function AdminProductList() {
             <div style={{ display: "flex", gap: 8 }}>
               <button className="btn-edit" onClick={() => navigate(`add?editId=${p.product_id}`)}>
                 Edit
+              </button>
+              <button className="btn-delete" onClick={() => handleDeleteProduct(p.product_id)}>
+                Hapus
               </button>
             </div>
           </div>

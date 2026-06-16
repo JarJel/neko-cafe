@@ -21,12 +21,12 @@ export const createOrder = (req, res) => {
   db.query(
     orderSql,
     [
-    customer_name,
-    order_type === "dine_in" ? table_number : null,
-    payment_method,
-    order_type,
-    total_price,
-  ],
+      customer_name,
+      order_type === "dine_in" ? table_number : null,
+      payment_method,
+      order_type,
+      total_price,
+    ],
     (err, orderResult) => {
       if (err) return res.status(500).json(err);
 
